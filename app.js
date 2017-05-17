@@ -51,44 +51,55 @@ function searchGames (query, callback) {
 function render() {
 
   // clear everything
-  $("#section-watchlist ul").empty();
+  $("#section-playlist ul").empty();
   $("#section-browse ul").empty();
 
   // render watchlist items
   model.playlistItems.forEach(function(game) {
     var title = $("<h6></h6>").text(game.name);
 
-  //   // movie poster
-  //   var poster = $("<img></img>")
-  //     .attr("src", api.posterUrl(movie))
-  //     .attr("class", "img-responsive");
-  //
-    // "I watched it" button
-    var button = $("<button></button>")
-      .text("I watched it")
-      .attr("class", "btn btn-danger")
+    var image;
+
+    if (game.image != null){
+      image = game.image.thumb_url;
+    }
+
+    // game icon
+    var icon = $("<img></img>")
+      .attr("src", image)
+      .attr("class", "img-responsive")
       .click(function() {
         var index = model.playlistItems.indexOf(game);
         model.playlistItems.splice(index, 1);
         render();
       });
 
-    // panel heading contains the title
-    var panelHeading = $("<div></div>")
-      .attr("class", "panel-heading")
-      .append(title);
+    // // "I watched it" button
+    // var button = $("<button></button>")
+    //   .text("I watched it")
+    //   .attr("class", "btn btn-danger")
+    //   .click(function() {
+    //     var index = model.playlistItems.indexOf(game);
+    //     model.playlistItems.splice(index, 1);
+    //     render();
+    //   });
 
-    // panel body contains the poster and button
-    var panelBody = $("<div></div>")
-      .attr("class", "panel-body")
-      .append( [button] );// include poster
+    // // panel heading contains the title
+    // var panelHeading = $("<div></div>")
+    //   .attr("class", "panel-heading")
+    //   .append(title);
+    //
+    // // panel body contains the poster and button
+    // var panelBody = $("<div></div>")
+    //   .attr("class", "panel-body")
+    //   .append( [button, icon] );// include poster
 
     // list item is a panel, contains the panel heading and body
     var itemView = $("<li></li>")
-      .append( [panelHeading, panelBody] )
-      .attr("class", "panel panel-default");
+      .append( [title, icon] )
+      // .attr("class", "panel panel-default");
 
-    $("#section-watchlist ul").append(itemView);
+    $("#section-playlist ul").append(itemView);
   });
 
   // render browse items
